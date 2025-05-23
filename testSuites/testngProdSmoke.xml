@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="MySuite" parallel="false">
+
+    <test name="regression">
+        <parameter name="url" value="https://www.saucedemo.com/"></parameter>
+        <groups>
+            <run>
+                <include name="smokee"></include>
+            </run>
+        </groups>
+        <classes>
+            <class name="swagLabsTests.tests.loginPageTests"></class>
+            <class name="swagLabsTests.tests.CartTests"></class>
+            <class name="swagLabsTests.tests.CheckoutTests"></class>
+            <class name="swagLabsTests.tests.productPageTests"></class>
+        </classes>
+    </test>
+
+
+
+</suite>

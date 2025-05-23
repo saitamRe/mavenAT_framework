@@ -1,4 +1,4 @@
-package swagLabsTests.testComponents;
+package utils;
 
 import demoQATraining.pageObjects.LoginPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -8,32 +8,38 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class BaseTest {
 
-    public WebDriver driver;
-    public LoginPage lp;
+    protected WebDriver driver;
+    protected LoginPage lp;
 
     public WebDriver initDriver() throws IOException {
         Properties props = new Properties();
-        FileInputStream fis = new FileInputStream(System.getProperty("user.dir")+"\\src\\test\\java\\resources\\globalData.properties");
-        props.load(fis);
+        File file = Paths.get(System.getProperty("user.dir"), "src", "test", "java", "resources", "globalData.properties").toFile();
+        try (FileInputStream fis = new FileInputStream(file)){
+            props.load(fis);
+        }
 
         String browser = System.getProperty("browser") != null ? System.getProperty("browser") : props.getProperty("browser");
 
-        if(browser.equalsIgnoreCase("chrome"))
+        switch (browser.toLowerCase())
         {
-            WebDriverManager.chromedriver().setup();
-            driver = new ChromeDriver();
-        }
-        if (browser.equalsIgnoreCase("firefox"))
-        {
-            WebDriverManager.firefoxdriver().setup();
-            driver = new FirefoxDriver();
+            case "chrome":
+                WebDriverManager.chromedriver().setup();
+                driver = new ChromeDriver();
+                break;
+            case "firefox":
+                WebDriverManager.firefoxdriver().setup();
+                driver = new FirefoxDriver();
+                break;
+            default:
+                throw new IllegalArgumentException("Browser name specified is not supported");
         }
 
         driver.manage().window().maximize();
@@ -44,7 +50,7 @@ public class BaseTest {
     public void launchApp() throws IOException {
         initDriver();
         lp = new LoginPage(driver);
-        lp.goTo(true);
+        lp.goTo(false);
     }
 
     @AfterMethod
