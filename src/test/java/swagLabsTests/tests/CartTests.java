@@ -4,7 +4,7 @@ import org.testng.annotations.Test;
 import utils.BaseTest;
 
 public class CartTests extends BaseTest {
-    @Test(groups = {""})
+    @Test(groups = {"abc"})
     public void cart()
     {
 
