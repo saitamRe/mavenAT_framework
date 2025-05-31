@@ -1,6 +1,6 @@
 package swagLabsTests.tests;
 
-import utils.LoginDataProvider;
+import utils.dataProviders.LoginDataProvider;
 import org.testng.annotations.Test;
 import utils.BaseTest;
 

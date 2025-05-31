@@ -4,7 +4,12 @@
 
     <test name="MyTest">
         <classes>
-            <class name="swagLabsTests.tests.CheckoutTests"></class>
+            <class name="swagLabsTests.tests.loginPageTests">
+                <methods>
+                    <exclude name="getData"></exclude>
+                </methods>
+            </class>
+            
             <!-- Add more classes as needed -->
         </classes>
     </test>
