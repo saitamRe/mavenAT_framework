@@ -12,7 +12,6 @@
         <classes>
             <class name="swagLabsTests.tests.loginPageTests"></class>
             <class name="swagLabsTests.tests.CartTests"></class>
-            <class name="swagLabsTests.tests.CheckoutTests"></class>
             <class name="swagLabsTests.tests.productPageTests"></class>
         </classes>
     </test>

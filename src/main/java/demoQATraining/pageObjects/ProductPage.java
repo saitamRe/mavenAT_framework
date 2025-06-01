@@ -1,22 +1,21 @@
 package demoQATraining.pageObjects;
 
-import demoQATraining.abstractComponents.AbstractComponent;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
+import demoQATraining.abstractComponents.BasePage;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.List;
 
-public class ProductPage extends AbstractComponent {
+public class ProductPage extends BasePage {
+
     WebDriver driver;
 
-    @FindBy(css = "div.inventory_item")
-    private List<WebElement> productItems;
+    private static final By ADD_TO_CART_BTN_BY = By.cssSelector("button.btn_inventory");
+    private static final By PRODUCT_ITEM_NAME_BY = By.cssSelector("div.inventory_item_name");
+    private static final By PRODUCT_ITEM_BY = By.cssSelector("div.inventory_item");
+    private static final By CART_BUTTON = By.cssSelector(".shopping_cart_link");
 
-    private final By addToCartBtnBy = By.cssSelector("button.btn_inventory");
 
     public ProductPage(WebDriver driver) {
         super(driver);
@@ -25,35 +24,45 @@ public class ProductPage extends AbstractComponent {
     }
 
     //getProducts
-    public List<WebElement> getProducts()
+    public List<WebElement> getProducts() {
+        waitForCondition(ExpectedConditions.visibilityOfElementLocated(PRODUCT_ITEM_NAME_BY), 3);
+        return driver.findElements(PRODUCT_ITEM_BY);
+    }
+
+    public String getNameOfFirstProduct()
     {
-        waitForElementToAppear(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.inventory_item")), 3);
-        return productItems;
+        List<WebElement> prods = getProducts();
+        return prods.get(0).findElement(PRODUCT_ITEM_NAME_BY).getText();
     }
 
     //countAllItems
-    public int countProductItems()
-    {
-        return productItems.size();
+    public int countProductItems() {
+           return getProducts().size();
     }
 
     //getProductByName
-    public WebElement getProductByName(String productName)
-    {
+    public WebElement getProductByName(String productName) {
 
-        return getProducts().stream().filter(product -> product.findElement(By.cssSelector("div.inventory_item_name")).getText()
-                .equalsIgnoreCase(productName))
-                .findAny()
-                .orElse(null);
+        for (WebElement product : getProducts()) {
+                WebElement nameElement = product.findElement(PRODUCT_ITEM_NAME_BY);
+                if (nameElement.getText().equalsIgnoreCase(productName)) {
+                    return product;
+                }
+        }
+        throw new NoSuchElementException("Product is not found " + productName);
     }
 
     //addToCart
-    public void addItemToCart(String productName)
-    {
-        getProductByName(productName)
-                .findElement(addToCartBtnBy)
-                .click();
+    public void addItemToCart(String productName) {
+        WebElement e = getProductByName(productName)
+                .findElement(ADD_TO_CART_BTN_BY);
+        clickOnElementJs(e);
+    }
 
+    public void clickOnCartBtn()
+    {
+        WebElement e = driver.findElement(CART_BUTTON);
+        clickOnElementJs(e);
     }
 
 }

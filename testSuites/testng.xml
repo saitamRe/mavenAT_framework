@@ -9,6 +9,7 @@
                     <exclude name="getData"></exclude>
                 </methods>
             </class>
+            <class name="swagLabsTests.tests.CartTests"></class>
             
             <!-- Add more classes as needed -->
         </classes>

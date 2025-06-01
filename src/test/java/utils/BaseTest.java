@@ -1,6 +1,7 @@
 package utils;
 
 import demoQATraining.pageObjects.LoginPage;
+import demoQATraining.pageObjects.ProductPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,19 +18,17 @@ import java.util.Properties;
 public class BaseTest {
 
     protected WebDriver driver;
-    protected LoginPage lp;
 
     public WebDriver initDriver() throws IOException {
         Properties props = new Properties();
         File file = Paths.get(System.getProperty("user.dir"), "src", "test", "java", "resources", "globalData.properties").toFile();
-        try (FileInputStream fis = new FileInputStream(file)){
+        try (FileInputStream fis = new FileInputStream(file)) {
             props.load(fis);
         }
 
         String browser = System.getProperty("browser") != null ? System.getProperty("browser") : props.getProperty("browser");
 
-        switch (browser.toLowerCase())
-        {
+        switch (browser.toLowerCase()) {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver();
@@ -47,19 +46,23 @@ public class BaseTest {
     }
 
     @BeforeMethod
-    public void launchApp() throws IOException {
+    protected void launchApp() throws IOException {
         initDriver();
-        lp = new LoginPage(driver);
-        lp.goTo(false);
     }
 
     @AfterMethod
-    public void tearDown()
-    {
-        if(driver != null)
-        {
+    protected void tearDown() {
+        if (driver != null) {
             driver.quit();
         }
+    }
+
+    protected LoginPage loginPage() {
+        return new LoginPage(driver);
+    }
+
+    protected ProductPage productPage() {
+        return new ProductPage(driver);
     }
 
 }
