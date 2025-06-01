@@ -2,6 +2,7 @@ package demoQATraining.pageObjects;
 
 import demoQATraining.abstractComponents.AbstractComponent;
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -12,9 +13,6 @@ import java.util.List;
 
 public class ProductPage extends AbstractComponent {
     WebDriver driver;
-
-    @FindBy(css = "div.inventory_item")
-    private List<WebElement> productItems;
 
     private final By addToCartBtnBy = By.cssSelector("button.btn_inventory");
 
@@ -28,23 +26,32 @@ public class ProductPage extends AbstractComponent {
     public List<WebElement> getProducts()
     {
         waitForElementToAppear(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.inventory_item")), 3);
-        return productItems;
+        return driver.findElements(By.cssSelector("div.inventory_item"));
     }
 
     //countAllItems
     public int countProductItems()
     {
-        return productItems.size();
+        return getProducts().size();
     }
 
     //getProductByName
     public WebElement getProductByName(String productName)
     {
 
-        return getProducts().stream().filter(product -> product.findElement(By.cssSelector("div.inventory_item_name")).getText()
-                .equalsIgnoreCase(productName))
-                .findAny()
-                .orElse(null);
+        for (WebElement product : getProducts())
+        {
+            try {
+                WebElement nameElement = product.findElement(By.cssSelector("div.inventory_item_name"));
+                if(nameElement.getText().equalsIgnoreCase(productName))
+                {
+                    return product;
+                }
+            }
+            catch (NoSuchElementException e)
+            {}
+        }
+        return null;
     }
 
     //addToCart
