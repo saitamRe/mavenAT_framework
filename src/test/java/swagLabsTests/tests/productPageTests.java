@@ -20,6 +20,7 @@ public class productPageTests extends BaseTest {
 
         System.out.println("url = " + url);
         System.out.println("apy_key = " + apikey);
+        System.out.println("apy_key = " + apikey);
 
     }
 
