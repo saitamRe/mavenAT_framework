@@ -10,13 +10,13 @@ public class LoginPage {
     WebDriver driver;
 
     @FindBy(id = "user-name")
-    private WebElement emailBox;
+    private static WebElement emailBox;
 
     @FindBy(id = "password")
-    private WebElement passwordBox;
+    private static WebElement passwordBox;
 
     @FindBy(id = "login-button")
-    private WebElement loginBtn;
+    private static WebElement loginBtn;
 
     public LoginPage(WebDriver driver) {
         this.driver = driver;
