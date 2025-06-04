@@ -20,12 +20,9 @@ public class loginPageTests extends BaseTestWithLogin {
     @Test(groups = {"smokee", "postDeployChecks"}, dataProvider = "getStandardUserCreds", dataProviderClass = LoginDataProvider.class)
     public void loginTest(HashMap<String, String> data) throws IOException, InterruptedException {
 
-
         ProductPage prPage = new ProductPage(driver);
         WebElement firstProduct = prPage.getProductByName("Sauce Labs Backpack");
         Assert.assertNotNull(firstProduct, "The 'Sauce Labs Backpack' item is not found");
         Assert.assertTrue(firstProduct.isDisplayed());
     }
-
-
 }

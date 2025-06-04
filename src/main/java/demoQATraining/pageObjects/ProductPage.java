@@ -16,7 +16,6 @@ public class ProductPage extends BasePage {
     private static final By PRODUCT_ITEM_BY = By.cssSelector("div.inventory_item");
     private static final By CART_BUTTON = By.cssSelector(".shopping_cart_link");
 
-
     public ProductPage(WebDriver driver) {
         super(driver);
         this.driver = driver;
@@ -29,25 +28,23 @@ public class ProductPage extends BasePage {
         return driver.findElements(PRODUCT_ITEM_BY);
     }
 
-    public String getNameOfFirstProduct()
-    {
+    public String getNameOfFirstProduct() {
         List<WebElement> prods = getProducts();
         return prods.get(0).findElement(PRODUCT_ITEM_NAME_BY).getText();
     }
 
     //countAllItems
     public int countProductItems() {
-           return getProducts().size();
+        return getProducts().size();
     }
 
     //getProductByName
     public WebElement getProductByName(String productName) {
-
         for (WebElement product : getProducts()) {
-                WebElement nameElement = product.findElement(PRODUCT_ITEM_NAME_BY);
-                if (nameElement.getText().equalsIgnoreCase(productName)) {
-                    return product;
-                }
+            WebElement nameElement = product.findElement(PRODUCT_ITEM_NAME_BY);
+            if (nameElement.getText().equalsIgnoreCase(productName)) {
+                return product;
+            }
         }
         throw new NoSuchElementException("Product is not found " + productName);
     }
@@ -59,10 +56,8 @@ public class ProductPage extends BasePage {
         clickOnElementJs(e);
     }
 
-    public void clickOnCartBtn()
-    {
+    public void clickOnCartBtn() {
         WebElement e = driver.findElement(CART_BUTTON);
         clickOnElementJs(e);
     }
-
 }
