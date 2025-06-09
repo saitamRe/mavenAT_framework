@@ -5,33 +5,29 @@ import demoQATraining.pageObjects.ProductPage;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Properties;
 
 public class BaseTest {
 
     protected WebDriver driver;
 
-    public WebDriver initDriver() throws IOException {
-        Properties props = new Properties();
-        File file = Paths.get(System.getProperty("user.dir"), "src", "test", "java", "resources", "globalData.properties").toFile();
-        try (FileInputStream fis = new FileInputStream(file)) {
-            props.load(fis);
-        }
+    public void initDriver() throws IOException {
 
-        String browser = System.getProperty("browser") != null ? System.getProperty("browser") : props.getProperty("browser");
 
+        String browser = ConfigReader.get("browser");
+        String mode = ConfigReader.get("mode");
         switch (browser.toLowerCase()) {
             case "chrome":
+                ChromeOptions options = new ChromeOptions();
+
                 WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+                options.addArguments(mode);
+                driver = new ChromeDriver(options);
                 break;
             case "firefox":
                 WebDriverManager.firefoxdriver().setup();
@@ -42,7 +38,6 @@ public class BaseTest {
         }
 
         driver.manage().window().maximize();
-        return driver;
     }
 
     @BeforeMethod
