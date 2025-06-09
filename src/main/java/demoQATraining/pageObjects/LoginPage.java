@@ -29,13 +29,5 @@ public class LoginPage {
         loginBtn.click();
     }
 
-    public void goTo(boolean inANewTab) {
-        if (inANewTab) {
-            driver.get("https://www.saucedemo.com/");
-        } else {
-            driver.navigate().to("https://www.saucedemo.com/");
-        }
-
-    }
 
 }
